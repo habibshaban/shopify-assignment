@@ -91,3 +91,15 @@ textarea {
   background-color: #374151 !important;
   color: #f3f4f6 !important;
 }
+
+/* Accessibility: Focus styles for CopilotKit popup trigger button */
+[data-copilotkit-popup-trigger],
+[class*="copilotKitButton"]:focus-visible {
+  outline: 2px solid #6366f1 !important;
+  outline-offset: 2px !important;
+}
+
+/* When popup is closed, prevent it from capturing focus */
+[data-copilotkit-popup][aria-hidden="true"] {
+  visibility: hidden;
+}

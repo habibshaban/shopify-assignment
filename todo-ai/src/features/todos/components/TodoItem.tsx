@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useRef } from "react";
 import { motion } from "motion/react";
 import type { Todo } from "../types";
 
@@ -17,11 +17,14 @@ export const TodoItem = memo(function TodoItem({
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
+  const checkboxRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(() => {
     if (editText.trim()) {
       onEdit(todo.id, editText.trim());
       setIsEditing(false);
+      // Return focus to checkbox after editing
+      checkboxRef.current?.focus();
     }
   }, [editText, onEdit, todo.id]);
 
@@ -31,6 +34,8 @@ export const TodoItem = memo(function TodoItem({
       if (e.key === "Escape") {
         setEditText(todo.text);
         setIsEditing(false);
+        // Return focus to checkbox when canceling edit
+        checkboxRef.current?.focus();
       }
     },
     [handleSubmit, todo.text]
@@ -45,9 +50,11 @@ export const TodoItem = memo(function TodoItem({
       className="flex items-center gap-3 p-4 bg-gray-800 rounded-lg group"
     >
       <input
+        ref={checkboxRef}
         type="checkbox"
         checked={todo.completed}
         onChange={() => onToggle(todo.id)}
+        aria-label={`Mark "${todo.text}" as ${todo.completed ? "incomplete" : "complete"}`}
         className="w-5 h-5 rounded border-gray-600 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-gray-900"
       />
       {isEditing ? (
@@ -58,6 +65,7 @@ export const TodoItem = memo(function TodoItem({
           onBlur={handleSubmit}
           onKeyDown={handleKeyDown}
           autoFocus
+          aria-label={`Edit todo: ${todo.text}`}
           className="flex-1 bg-gray-700 text-gray-100 px-3 py-1 rounded outline-none focus:ring-2 focus:ring-indigo-500"
         />
       ) : (
@@ -68,12 +76,20 @@ export const TodoItem = memo(function TodoItem({
           {todo.text}
         </span>
       )}
-      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Buttons are always visible but with reduced opacity, fully visible on hover/focus-within */}
+      <div className="flex gap-2 opacity-100 sm:opacity-50 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 transition-opacity">
         <button
           onClick={() => setIsEditing(true)}
-          className="p-1.5 text-gray-400 hover:text-indigo-400 transition-colors"
+          aria-label={`Edit "${todo.text}"`}
+          className="p-1.5 text-gray-400 hover:text-indigo-400 focus:text-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -84,9 +100,16 @@ export const TodoItem = memo(function TodoItem({
         </button>
         <button
           onClick={() => onRemove(todo.id)}
-          className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+          aria-label={`Delete "${todo.text}"`}
+          className="p-1.5 text-gray-400 hover:text-red-400 focus:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
