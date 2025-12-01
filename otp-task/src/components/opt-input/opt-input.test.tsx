@@ -48,6 +48,32 @@ describe("OptInput", () => {
       expect(screen.getByLabelText("Digit 3 of 4")).toBeInTheDocument();
       expect(screen.getByLabelText("Digit 4 of 4")).toBeInTheDocument();
     });
+
+    it("shows placeholder '0' for unfocused empty inputs with numeric validation", () => {
+      render(<OptInput length={6} validationType="numeric" />);
+
+      const placeholders = screen.getAllByText("0");
+      expect(placeholders).toHaveLength(6);
+    });
+
+    it("does not show placeholder for non-numeric validation types", () => {
+      render(<OptInput length={6} validationType="alpha" />);
+
+      const placeholders = screen.queryAllByText("0");
+      expect(placeholders).toHaveLength(0);
+    });
+
+    it("renders dash separator after third input when length > 3", () => {
+      render(<OptInput length={6} />);
+
+      expect(screen.getByText("-")).toBeInTheDocument();
+    });
+
+    it("does not render dash when length is 3 or less", () => {
+      render(<OptInput length={3} />);
+
+      expect(screen.queryByText("-")).not.toBeInTheDocument();
+    });
   });
 
   describe("controlled value", () => {

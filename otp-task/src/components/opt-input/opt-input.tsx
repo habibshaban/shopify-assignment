@@ -148,13 +148,14 @@ const OptInput = ({
   }, [disabled, getFirstEmptyIndex, focusInput]);
 
   const filledCount = internalValue.filter((char) => char !== "").length;
+  const showDash = length > 3;
 
   return (
     <motion.div
       role="group"
       aria-label={ariaLabel || `Enter ${length}-digit verification code`}
       aria-describedby={ariaDescribedBy}
-      className="flex gap-3"
+      className="flex gap-3 items-center"
       onPaste={handlePasteEvent}
       onClick={handleContainerClick}
       animate={error ? shakeAnimation : {}}
@@ -166,66 +167,76 @@ const OptInput = ({
         const isHighlighted = error ? index === 0 : index === filledCount && filledCount < length;
         const prevChar = previousChars[index];
         const isNewChar = char !== "" && prevChar !== char;
+        const showPlaceholder = !isFilled && !isFocused && validationType === "numeric";
+        const showDashAfter = showDash && index === 2;
 
         return (
-          <div key={`${groupId}-input-${index}`} className="relative">
-            <motion.input
-              ref={(el) => {
-                inputRefs.current[index] = el;
-              }}
-              id={`${groupId}-input-${index}`}
-              type="text"
-              inputMode={validation?.inputMode || "numeric"}
-              pattern={validation?.pattern}
-              maxLength={1}
-              value={char}
-              disabled={disabled}
-              aria-label={`Digit ${index + 1} of ${length}`}
-              aria-invalid={error}
-              autoComplete={index === 0 ? "one-time-code" : "off"}
-              autoFocus={autoFocus && index === 0}
-              data-index={index}
-              className={`
-                w-12 h-14 text-center text-xl font-semibold
-                bg-[#1d1d1f] rounded-lg
-                outline-none
-                transition-colors duration-200
-                disabled:opacity-50 disabled:cursor-not-allowed
-                text-transparent
-                caret-transparent
-                selection:bg-transparent
-                ${
-                  error
-                    ? "border-2 border-[#ff3b30]"
-                    : isHighlighted || isFocused
-                    ? "border-2 border-[#0071e3]"
-                    : "border border-[#3d3d3f]"
-                }
-              `}
-              onChange={(e) => handleChange(index, e)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              onFocus={() => handleFocus(index)}
-              onBlur={handleBlur}
-              initial={false}
-              animate={{
-                scale: isFocused ? 1.05 : 1,
-              }}
-              transition={{ duration: 0.15 }}
-            />
-            <AnimatePresence mode="popLayout">
-              {isFilled && (
-                <motion.span
-                  key={`${groupId}-char-${index}-${char}`}
-                  className="absolute inset-0 flex items-center justify-center text-xl font-semibold text-[#f5f5f7] pointer-events-none"
-                  initial={isNewChar ? { opacity: 0, y: 10 } : false}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
-                >
-                  {char}
-                </motion.span>
+          <div key={`${groupId}-input-${index}`} className="flex items-center gap-3">
+            <div className="relative">
+              <motion.input
+                ref={(el) => {
+                  inputRefs.current[index] = el;
+                }}
+                id={`${groupId}-input-${index}`}
+                type="text"
+                inputMode={validation?.inputMode || "numeric"}
+                pattern={validation?.pattern}
+                maxLength={1}
+                value={char}
+                disabled={disabled}
+                aria-label={`Digit ${index + 1} of ${length}`}
+                aria-invalid={error}
+                autoComplete={index === 0 ? "one-time-code" : "off"}
+                autoFocus={autoFocus && index === 0}
+                data-index={index}
+                className={`
+                  w-12 h-14 text-center text-xl font-semibold
+                  bg-[#1d1d1f] rounded-lg
+                  outline-none
+                  transition-colors duration-200
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                  text-transparent
+                  caret-transparent
+                  selection:bg-transparent
+                  ${
+                    error
+                      ? "border-2 border-[#ff3b30]"
+                      : isHighlighted || isFocused
+                      ? "border-2 border-[#0071e3]"
+                      : "border border-[#3d3d3f]"
+                  }
+                `}
+                onChange={(e) => handleChange(index, e)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                onFocus={() => handleFocus(index)}
+                onBlur={handleBlur}
+                initial={false}
+                animate={{
+                  scale: isFocused ? 1.05 : 1,
+                }}
+                transition={{ duration: 0.15 }}
+              />
+              {showPlaceholder && (
+                <span className="absolute inset-0 flex items-center justify-center text-xl font-semibold text-[#6e6e73] pointer-events-none">
+                  0
+                </span>
               )}
-            </AnimatePresence>
+              <AnimatePresence mode="popLayout">
+                {isFilled && (
+                  <motion.span
+                    key={`${groupId}-char-${index}-${char}`}
+                    className="absolute inset-0 flex items-center justify-center text-xl font-semibold text-[#f5f5f7] pointer-events-none"
+                    initial={isNewChar ? { opacity: 0, y: 10 } : false}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                  >
+                    {char}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </div>
+            {showDashAfter && <span className="text-xl font-semibold text-[#6e6e73]">-</span>}
           </div>
         );
       })}
