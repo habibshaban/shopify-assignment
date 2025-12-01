@@ -12,25 +12,19 @@ describe("useOptState", () => {
     });
 
     it("initializes with controlled value", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, value: "123456" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, value: "123456" }));
 
       expect(result.current.value).toEqual(["1", "2", "3", "4", "5", "6"]);
     });
 
     it("pads controlled value with empty strings if shorter than length", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, value: "123" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, value: "123" }));
 
       expect(result.current.value).toEqual(["1", "2", "3", "", "", ""]);
     });
 
     it("truncates controlled value if longer than length", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 4, value: "123456" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 4, value: "123456" }));
 
       expect(result.current.value).toEqual(["1", "2", "3", "4"]);
     });
@@ -48,9 +42,7 @@ describe("useOptState", () => {
     });
 
     it("returns alpha validation when validationType is alpha", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, validationType: "alpha" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, validationType: "alpha" }));
 
       expect(result.current.validation).toEqual({
         regexp: /[^a-zA-Z]/g,
@@ -72,9 +64,7 @@ describe("useOptState", () => {
     });
 
     it("returns null validation when validationType is none", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, validationType: "none" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, validationType: "none" }));
 
       expect(result.current.validation).toBeNull();
     });
@@ -83,9 +73,7 @@ describe("useOptState", () => {
   describe("setCharAtIndex", () => {
     it("sets character at specified index", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, onChange })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, onChange }));
 
       act(() => {
         result.current.setCharAtIndex(0, "1");
@@ -158,9 +146,7 @@ describe("useOptState", () => {
 
     it("calls onComplete when all characters are filled", () => {
       const onComplete = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 4, onComplete })
-      );
+      const { result } = renderHook(() => useOptState({ length: 4, onComplete }));
 
       act(() => {
         result.current.setCharAtIndex(0, "1");
@@ -185,9 +171,7 @@ describe("useOptState", () => {
   describe("clearCharAtIndex", () => {
     it("clears character at specified index", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, onChange, value: "123456" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, onChange, value: "123456" }));
 
       act(() => {
         result.current.clearCharAtIndex(2, false);
@@ -198,9 +182,7 @@ describe("useOptState", () => {
 
     it("clears previous character when current is empty and movePrevious is true", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, onChange })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, onChange }));
 
       // Set first two characters
       act(() => {
@@ -220,9 +202,7 @@ describe("useOptState", () => {
   describe("clearAll", () => {
     it("clears all characters", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, onChange })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, onChange }));
 
       act(() => {
         result.current.setCharAtIndex(0, "1");
@@ -242,9 +222,7 @@ describe("useOptState", () => {
   describe("handlePaste", () => {
     it("handles paste of valid characters", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 6, onChange })
-      );
+      const { result } = renderHook(() => useOptState({ length: 6, onChange }));
 
       act(() => {
         result.current.handlePaste("123456");
@@ -256,9 +234,7 @@ describe("useOptState", () => {
 
     it("truncates pasted value to length", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() =>
-        useOptState({ length: 4, onChange })
-      );
+      const { result } = renderHook(() => useOptState({ length: 4, onChange }));
 
       act(() => {
         result.current.handlePaste("123456");
@@ -312,9 +288,7 @@ describe("useOptState", () => {
     });
 
     it("returns last index when all slots are filled", () => {
-      const { result } = renderHook(() =>
-        useOptState({ length: 4, value: "1234" })
-      );
+      const { result } = renderHook(() => useOptState({ length: 4, value: "1234" }));
 
       expect(result.current.getFirstEmptyIndex()).toBe(3);
     });
@@ -338,10 +312,9 @@ describe("useOptState", () => {
     });
 
     it("reflects controlled value changes", () => {
-      const { result, rerender } = renderHook(
-        ({ value }) => useOptState({ length: 6, value }),
-        { initialProps: { value: "123" } }
-      );
+      const { result, rerender } = renderHook(({ value }) => useOptState({ length: 6, value }), {
+        initialProps: { value: "123" },
+      });
 
       expect(result.current.value).toEqual(["1", "2", "3", "", "", ""]);
 

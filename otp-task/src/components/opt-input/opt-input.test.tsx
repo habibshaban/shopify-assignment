@@ -37,9 +37,7 @@ describe("OptInput", () => {
     it("uses custom aria-label when provided", () => {
       render(<OptInput length={6} aria-label="Enter OTP code" />);
 
-      expect(
-        screen.getByRole("group", { name: "Enter OTP code" })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("group", { name: "Enter OTP code" })).toBeInTheDocument();
     });
 
     it("each input has proper aria-label", () => {
