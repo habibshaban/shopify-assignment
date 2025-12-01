@@ -1,1 +1,1 @@
-export { greet, farewell } from "./greeter.js";
+export { CartChainEventManager, createCartChainEventManager } from "./cart-chain-event-manager.js";
