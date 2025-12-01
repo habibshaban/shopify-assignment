@@ -49,7 +49,7 @@ import OtpInput from "./components/opt-input/opt-input";
   onComplete={(value) => console.log(value)}
   validationType="numeric"
   autoFocus
-/>
+/>;
 ```
 
 ## Demo
