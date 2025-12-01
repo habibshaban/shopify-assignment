@@ -1,0 +1,93 @@
+:root {
+  --copilot-kit-primary-color: #6366f1;
+  --copilot-kit-contrast-color: #ffffff;
+  --copilot-kit-background-color: #1f2937;
+  --copilot-kit-secondary-color: #374151;
+  --copilot-kit-separator-color: #4b5563;
+  --copilot-kit-muted-color: #9ca3af;
+  --copilot-kit-response-button-color: #6366f1;
+  --copilot-kit-response-button-background-color: #374151;
+}
+
+[data-copilotkit-popup],
+.copilotKitPopup {
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+}
+
+.copilotKitHeader {
+  background-color: #111827 !important;
+  border-bottom: 1px solid #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+.copilotKitMessages {
+  background-color: #1f2937 !important;
+}
+
+.copilotKitMessage {
+  color: #f3f4f6 !important;
+}
+
+.copilotKitUserMessage {
+  background-color: #6366f1 !important;
+  color: white !important;
+}
+
+.copilotKitAssistantMessage {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+.copilotKitInput {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f3f4f6 !important;
+}
+
+.copilotKitInput::placeholder {
+  color: #9ca3af !important;
+}
+
+.copilotKitButton {
+  background-color: #6366f1 !important;
+  color: white !important;
+}
+
+.copilotKitButton:hover {
+  background-color: #4f46e5 !important;
+}
+
+[class*="copilotKitWindow"] {
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+}
+
+[class*="copilotKitHeader"] {
+  background-color: #111827 !important;
+  color: #f3f4f6 !important;
+}
+
+[class*="copilotKitBody"] {
+  background-color: #1f2937 !important;
+}
+
+[class*="copilotKitFooter"] {
+  background-color: #1f2937 !important;
+  border-top: 1px solid #374151 !important;
+}
+
+[class*="copilotKitInput"] {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b5563 !important;
+}
+
+[class*="copilotKitInput"]::placeholder {
+  color: #9ca3af !important;
+}
+
+textarea {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
