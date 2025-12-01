@@ -24,7 +24,7 @@ export class CartChainEventManager {
 
     for (const eventAction of eventsArray) {
       currentCart = await eventAction(currentCart);
-      if (currentCart === null) {
+      if (currentCart === null || currentCart === undefined) {
         this.cart = null;
         return null;
       }
